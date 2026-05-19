@@ -2,16 +2,28 @@ import os
 
 from crewai import Agent
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from crewai.llm import LLM
 from tools import search_jobs
 
 load_dotenv()
 
 # Verify API key is set from .env file
-if not os.getenv("OPENAI_API_KEY"):
-    raise ValueError("Please set OPENAI_API_KEY in your .env file")
+if not os.getenv("OPENROUTER_API_KEY"):
+    raise ValueError("Please set OPENROUTER_API_KEY in your .env file")
 
-llm = ChatOpenAI(model="gpt-4.1-2025-04-14")
+llm = LLM(
+    model="openrouter/openai/gpt-4o",
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1",
+    extra_body={
+        "route": "fallback",
+        "models": [
+            "openai/gpt-4o",
+            "deepseek/deepseek-r1",
+            "meta-llama/llama-3.3-70b-instruct"
+        ]
+    }
+)
 
 
 def create_agents(resume_content: str = ""):

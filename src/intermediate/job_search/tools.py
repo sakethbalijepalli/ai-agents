@@ -96,7 +96,7 @@ def search_jobs(input_json: str) -> str:
         return "Error: Please set ADZUNA_APP_ID and ADZUNA_API_KEY in your .env file."
 
     base_url = "http://api.adzuna.com/v1/api/jobs"
-    url = f"{base_url}/us/search/1"
+    url = f"{base_url}/in/search/1"
 
     params = {
         "app_id": app_id,

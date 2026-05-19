@@ -3,11 +3,24 @@ import os
 from crewai import Agent
 from crewai.llm import LLM
 from tools import exa_search_tool
+from dotenv import load_dotenv
 
-os.environ["EXA_API_KEY"] = os.getenv("EXA_API_KEY")
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+load_dotenv()
 
-llm = LLM(model="gpt-4o", temperature=0.9)
+llm = LLM(
+    model="openrouter/openai/gpt-4o",
+    temperature=0.9,
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1",
+    extra_body={
+        "route": "fallback",
+        "models": [
+            "openai/gpt-4o",
+            "deepseek/deepseek-r1",
+            "meta-llama/llama-3.3-70b-instruct"
+        ]
+    }
+)
 
 # Agent 1: Content Explorer - Gathers information about the topic from the internet
 content_explorer = Agent(

@@ -13,8 +13,6 @@ load_dotenv()
 session = requests.Session(impersonate="chrome")
 
 
-os.environ["EXA_API_KEY"] = os.getenv("EXA_API_KEY")
-
 try:
     exa_search_tool = EXASearchTool()
 except Exception as e:

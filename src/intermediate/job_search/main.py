@@ -211,9 +211,9 @@ def main():
             job_search_system = EnhancedJobSearchAgentSystem()
 
         # Example usage - CUSTOMIZE THESE PARAMETERS
-        role = "Senior Data Scientist"
-        location = "New York"
-        num_results = 5
+        role = "Software Engineer"
+        location = "Hyderabad, Bangalore"
+        num_results = 10
 
         # Execute personalized job search
         result = job_search_system.search_jobs(

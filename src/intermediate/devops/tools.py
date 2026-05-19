@@ -10,7 +10,6 @@ load_dotenv()
 log_reader_tool = FileReadTool()
 
 # TOOL 2: EXASearchTool
-os.environ["EXA_API_KEY"] = os.getenv("EXA_API_KEY")
 
 try:
     exa_search_tool = EXASearchTool()

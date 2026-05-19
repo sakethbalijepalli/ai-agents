@@ -8,7 +8,7 @@ def callback_function(output: TaskOutput):
     try:
         with open("task_output.txt", "a", encoding="utf-8") as file:
             file.write(f"=== {output.agent} - {output.description} ===\n")
-            file.write(f"{output.result}\n\n")
+            file.write(f"{output.raw}\n\n")
         print(f"✅ Result saved to task_output.txt")
     except Exception as e:
         print(f"❌ Error saving output: {e}")

@@ -7,6 +7,11 @@ https://docs.crewai.com/en/tools/file-document/pdfsearchtool#pdf-rag-search
 
 from crewai import Agent, Crew, Task
 from crewai_tools import PDFSearchTool
+from crewai.llm import LLM
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def create_agent(query: str, pdf_path: str) -> Agent:
@@ -24,12 +29,26 @@ def create_agent(query: str, pdf_path: str) -> Agent:
         pdf=pdf_path,
     )
 
+    llm = LLM(
+        model="openrouter/openai/gpt-4o-mini",
+        api_key=os.getenv("OPENROUTER_API_KEY"),
+        base_url="https://openrouter.ai/api/v1",
+        extra_body={
+            "route": "fallback",
+            "models": [
+                "openai/gpt-4o-mini",
+                "deepseek/deepseek-r1",
+                "meta-llama/llama-3.3-70b-instruct"
+            ]
+        }
+    )
+
     agent = Agent(
         role="PDF Summarizer",
         goal="Given a PDF file, summarize the content",
         backstory="You are a helpful assistant that summarizes PDF files",
         verbose=True,
-        llm="gpt-4o-mini",
+        llm=llm,
         max_iter=1,
         max_retry_limit=2,
         respect_context_window=True,

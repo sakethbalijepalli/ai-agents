@@ -10,11 +10,10 @@ from pathlib import Path
 
 from crewai import Agent, Crew, Task
 from crewai_tools import ScrapeWebsiteTool
+from crewai.llm import LLM
 from dotenv import load_dotenv
 
 load_dotenv()
-
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 # Get absolute path for memory directory
 memory_dir = Path(__file__).parent / "crewai_memory"
@@ -33,12 +32,26 @@ def create_agent(website_url: str) -> Agent:
 
     scrape_website_tool = ScrapeWebsiteTool(website_url=website_url)
 
+    llm = LLM(
+        model="openrouter/openai/gpt-4o-mini",
+        api_key=os.getenv("OPENROUTER_API_KEY"),
+        base_url="https://openrouter.ai/api/v1",
+        extra_body={
+            "route": "fallback",
+            "models": [
+                "openai/gpt-4o-mini",
+                "deepseek/deepseek-r1",
+                "meta-llama/llama-3.3-70b-instruct"
+            ]
+        }
+    )
+
     agent = Agent(
         role="Website Scraper",
         goal="Given a website, scrape the content",
         backstory="You are a helpful assistant that scrapes websites",
         verbose=True,
-        llm="gpt-4o-mini",
+        llm=llm,
         max_iter=2,
         max_retry_limit=2,
         respect_context_window=True,

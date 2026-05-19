@@ -12,13 +12,20 @@ from tools import (
 
 load_dotenv()
 
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-
 llm = LLM(
-    model="gpt-4.1-2025-04-14",
+    model="openrouter/openai/gpt-4o",
     temperature=0.7,
     max_tokens=4000,
-    timeout=120,  # 2 minutes timeout
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1",
+    extra_body={
+        "route": "fallback",
+        "models": [
+            "openai/gpt-4o",
+            "deepseek/deepseek-r1",
+            "meta-llama/llama-3.3-70b-instruct"
+        ]
+    }
 )
 # Agent for gathering company news and information
 news_info_explorer = Agent(

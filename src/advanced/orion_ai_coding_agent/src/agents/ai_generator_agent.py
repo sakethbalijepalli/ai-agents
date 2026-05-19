@@ -74,12 +74,24 @@ class AIGeneratorAgent(BaseAgent):
                 f"⚠️ Warning: {model} is not a GPT-5 model. Consider using gpt-5-mini for best results."
             )
 
-        # Initialize LangChain components
+        # Initialize LangChain components with OpenRouter
         self.llm = ChatOpenAI(
-            model=model,
+            model=f"openai/{model}",
             temperature=temperature,
             max_tokens=32768,
-            model_kwargs={"response_format": {"type": "json_object"}},
+            api_key=os.getenv("OPENROUTER_API_KEY"),
+            base_url="https://openrouter.ai/api/v1",
+            model_kwargs={
+                "response_format": {"type": "json_object"},
+                "extra_body": {
+                    "route": "fallback",
+                    "models": [
+                        f"openai/{model}",
+                        "deepseek/deepseek-r1",
+                        "meta-llama/llama-3.3-70b-instruct"
+                    ]
+                }
+            }
         )
 
         self.update_state("model", model)
