@@ -119,9 +119,3 @@ Please don't raise a PR until your project has been approved.
   
 ## License 
 This project is under the MIT License.
-
-## Contact
-Email - duttaishan0098@gmail.com
-[LinkedIn](https://www.linkedin.com/in/ishandutta0098/)
-[X](https://x.com/ishandutta0098)
-[Instagram](https://www.instagram.com/ishandutta.ai)
